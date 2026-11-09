@@ -6,6 +6,7 @@
     },
     "messages": {
       ".read": "auth != null && auth.uid === 'PEJmKG9mp3ahKo0jL77qVMiGLd42'",
+      ".write": "auth != null && auth.uid === 'PEJmKG9mp3ahKo0jL77qVMiGLd42'",
       "$messageId": {
         ".write": "(!data.exists() && newData.exists()) || (auth != null && auth.uid === 'PEJmKG9mp3ahKo0jL77qVMiGLd42')",
         ".validate": "newData.hasChildren(['name', 'email', 'subject', 'message', 'createdAt', 'read'])",
