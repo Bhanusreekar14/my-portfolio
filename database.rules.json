@@ -1,0 +1,40 @@
+{
+  "rules": {
+    "portfolio": {
+      ".read": true,
+      ".write": "auth != null && (auth.uid === 'YOUR_ADMIN_UID_HERE' || auth.token.email === 'admin@bhanu.com' || auth.token.email === 'bhanusreekar14@gmail.com')"
+    },
+    "messages": {
+      ".read": "auth != null && (auth.uid === 'YOUR_ADMIN_UID_HERE' || auth.token.email === 'admin@bhanu.com' || auth.token.email === 'bhanusreekar14@gmail.com')",
+      "$messageId": {
+        ".write": "(!data.exists() && newData.exists()) || (auth != null && (auth.uid === 'YOUR_ADMIN_UID_HERE' || auth.token.email === 'admin@bhanu.com' || auth.token.email === 'bhanusreekar14@gmail.com'))",
+        ".validate": "newData.hasChildren(['name', 'email', 'subject', 'message', 'createdAt', 'read'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        },
+        "email": {
+          ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 100 && newData.val().matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/)"
+        },
+        "subject": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200"
+        },
+        "message": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 5000"
+        },
+        "createdAt": {
+          ".validate": "newData.isString()"
+        },
+        "read": {
+          ".validate": "newData.isBoolean() && (!data.exists() ? newData.val() === false : true)"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
