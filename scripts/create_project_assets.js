@@ -1,0 +1,126 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectsDir = path.join(__dirname, '..', 'public', 'projects');
+
+if (!fs.existsSync(projectsDir)) {
+  fs.mkdirSync(projectsDir, { recursive: true });
+}
+
+// Function to generate SVG mockup for projects
+function generateSvg(title, category, tags, description) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdfbf7"/>
+      <stop offset="100%" stop-color="#ece5d4"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="3" dy="4" stdDeviation="6" flood-color="#171512" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect x="20" y="20" width="760" height="460" fill="none" stroke="#171512" stroke-width="2" opacity="0.85"/>
+  <rect x="28" y="28" width="744" height="444" fill="none" stroke="#171512" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+
+  <!-- Top bar -->
+  <rect x="20" y="20" width="760" height="44" fill="#171512"/>
+  <circle cx="45" cy="42" r="5" fill="#ed432f"/>
+  <circle cx="65" cy="42" r="5" fill="#e8d2a2"/>
+  <circle cx="85" cy="42" r="5" fill="#f3eedf"/>
+  <text x="110" y="47" font-family="'Courier New', monospace" font-size="12" fill="#f3eedf" letter-spacing="2">SYSTEM://PROJECT_PREVIEW.AI</text>
+  <text x="730" y="47" font-family="'Courier New', monospace" font-size="12" fill="#ed432f" font-weight="bold">● LIVE</text>
+
+  <!-- Main Card Container -->
+  <g transform="translate(60, 95)">
+    <!-- Category Badge -->
+    <rect x="0" y="0" width="160" height="26" fill="#ed432f" rx="3"/>
+    <text x="80" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="1.5">${category}</text>
+
+    <!-- Title -->
+    <text x="0" y="65" font-family="Georgia, serif" font-size="34" font-weight="bold" fill="#171512">${title}</text>
+
+    <!-- Subtitle / Description -->
+    <text x="0" y="105" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="15" fill="#4a453e">
+      ${description.substring(0, 60)}
+    </text>
+    <text x="0" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="15" fill="#4a453e">
+      ${description.substring(60, 120)}...
+    </text>
+
+    <!-- Tech Stack Pill Chips -->
+    <g transform="translate(0, 160)">
+      ${tags.map((tag, idx) => `
+        <g transform="translate(${idx * 115}, 0)">
+          <rect width="105" height="28" fill="#ffffff" stroke="#171512" stroke-width="1.5" rx="14"/>
+          <text x="52.5" y="18" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#171512" text-anchor="middle">${tag}</text>
+        </g>
+      `).join('')}
+    </g>
+
+    <!-- Visual Dashboard Graph / Wireframe -->
+    <g transform="translate(0, 215)">
+      <rect width="680" height="130" fill="#ffffff" stroke="#171512" stroke-width="1.5" rx="6" filter="url(#shadow)"/>
+      <line x1="0" y1="35" x2="680" y2="35" stroke="#ece5d4" stroke-width="1.5"/>
+      <circle cx="20" cy="18" r="4" fill="#ed432f"/>
+      <text x="35" y="22" font-family="monospace" font-size="11" fill="#7a7265">METRICS & INFERENCE PIPELINE</text>
+
+      <!-- Graph Bars -->
+      <rect x="40" y="90" width="30" height="30" fill="#171512" rx="2"/>
+      <rect x="85" y="65" width="30" height="55" fill="#ed432f" rx="2"/>
+      <rect x="130" y="50" width="30" height="70" fill="#171512" rx="2"/>
+      <rect x="175" y="75" width="30" height="45" fill="#171512" opacity="0.6" rx="2"/>
+      <rect x="220" y="40" width="30" height="80" fill="#ed432f" rx="2"/>
+
+      <!-- Data Stats Box -->
+      <g transform="translate(320, 50)">
+        <text x="0" y="20" font-family="monospace" font-size="12" fill="#7a7265">MODEL CONFIDENCE</text>
+        <text x="0" y="45" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="#171512">98.4%</text>
+        <text x="180" y="20" font-family="monospace" font-size="12" fill="#7a7265">STATUS</text>
+        <text x="180" y="45" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="#ed432f">VERIFIED</text>
+      </g>
+    </g>
+  </g>
+</svg>`;
+}
+
+const assets = [
+  {
+    name: 'chainiq-ai.png',
+    svg: generateSvg(
+      'ChainIQ AI',
+      'AI PLATFORM',
+      ['Python', 'FastAPI', 'CatBoost', 'React', 'Recharts'],
+      'AI-powered supply chain intelligence platform predicting shipment delays, operational risks, and recommendations.'
+    )
+  },
+  {
+    name: 'nagarseva-ai.png',
+    svg: generateSvg(
+      'NagarSeva AI',
+      'COMPUTER VISION',
+      ['YOLOv11', 'PyTorch', 'FastAPI', 'React', 'Supabase'],
+      'Automated civic grievance and urban road damage detection system with computer vision and workflow dispatch.'
+    )
+  },
+  {
+    name: 'fliptrack.png',
+    svg: generateSvg(
+      'FlipTrack Delivery',
+      'ENTERPRISE TECH',
+      ['React', 'Node.js', 'Salesforce DX', 'REST APIs', 'Leaflet'],
+      'Real-time order and shipment tracking platform with live delivery progression, route tracking and automation.'
+    )
+  }
+];
+
+for (const asset of assets) {
+  const filePath = path.join(projectsDir, asset.name);
+  fs.writeFileSync(filePath, asset.svg);
+  console.log('Created asset:', filePath);
+}
