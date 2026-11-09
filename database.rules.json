@@ -2,12 +2,12 @@
   "rules": {
     "portfolio": {
       ".read": true,
-      ".write": "auth != null && (auth.uid === 'YOUR_ADMIN_UID_HERE' || auth.token.email === 'admin@bhanu.com' || auth.token.email === 'bhanusreekar14@gmail.com')"
+      ".write": "auth != null && auth.uid === 'PEJmKG9mp3ahKo0jL77qVMiGLd42'"
     },
     "messages": {
-      ".read": "auth != null && (auth.uid === 'YOUR_ADMIN_UID_HERE' || auth.token.email === 'admin@bhanu.com' || auth.token.email === 'bhanusreekar14@gmail.com')",
+      ".read": "auth != null && auth.uid === 'PEJmKG9mp3ahKo0jL77qVMiGLd42'",
       "$messageId": {
-        ".write": "(!data.exists() && newData.exists()) || (auth != null && (auth.uid === 'YOUR_ADMIN_UID_HERE' || auth.token.email === 'admin@bhanu.com' || auth.token.email === 'bhanusreekar14@gmail.com'))",
+        ".write": "(!data.exists() && newData.exists()) || (auth != null && auth.uid === 'PEJmKG9mp3ahKo0jL77qVMiGLd42')",
         ".validate": "newData.hasChildren(['name', 'email', 'subject', 'message', 'createdAt', 'read'])",
         "name": {
           ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"

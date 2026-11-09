@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
+import { ADMIN_UID } from "../components/ProtectedRoute";
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -18,7 +19,12 @@ function AdminLogin() {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user?.uid !== ADMIN_UID) {
+        await signOut(auth);
+        setError("Access denied: You are not authorized as portfolio administrator.");
+        return;
+      }
       navigate("/admin/dashboard");
     } catch (error) {
       console.error(error);
