@@ -51,10 +51,17 @@ export default async function handler(req, res) {
   // Diagnostic GET health check (safe, exposes NO secrets)
   if (req.method === "GET") {
     const hasKey = Boolean(process.env.RESEND_API_KEY);
-    const recipientRaw =
+    const recipientRaw = (
       process.env.ADMIN_NOTIFICATION_EMAIL ||
       process.env.NOTIFICATION_RECIPIENT_EMAIL ||
-      "sreekarbhanu14@gmail.com";
+      "bhanusreekar14@gmail.com"
+    ).trim();
+
+    const recipientNormalized =
+      recipientRaw.toLowerCase() === "sreekarbhanu14@gmail.com"
+        ? "bhanusreekar14@gmail.com"
+        : recipientRaw;
+
     const sender = process.env.EMAIL_FROM || "Portfolio Inquiry <onboarding@resend.dev>";
 
     return res.status(200).json({
@@ -63,7 +70,7 @@ export default async function handler(req, res) {
       diagnostics: {
         hasResendKey: hasKey,
         keyLength: hasKey ? process.env.RESEND_API_KEY.length : 0,
-        recipientMasked: maskEmail(recipientRaw),
+        recipientMasked: maskEmail(recipientNormalized),
         senderAddress: sender,
         environment: process.env.VERCEL_ENV || "unknown",
       },
@@ -128,11 +135,16 @@ export default async function handler(req, res) {
     }
 
     // 4. Destination Admin Email Configuration
-    const recipientEmail = (
+    let recipientEmail = (
       process.env.ADMIN_NOTIFICATION_EMAIL ||
       process.env.NOTIFICATION_RECIPIENT_EMAIL ||
-      "sreekarbhanu14@gmail.com"
+      "bhanusreekar14@gmail.com"
     ).trim();
+
+    // Auto-normalize if transposed sreekarbhanu14 was configured instead of Resend account owner bhanusreekar14
+    if (recipientEmail.toLowerCase() === "sreekarbhanu14@gmail.com") {
+      recipientEmail = "bhanusreekar14@gmail.com";
+    }
 
     // 5. Plain Text Fallback (Prevents spam classification in Gmail)
     const submissionDate = new Date().toLocaleString("en-US", {
