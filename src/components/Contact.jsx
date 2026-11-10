@@ -17,6 +17,7 @@ function Contact() {
     email: "",
     subject: "",
     message: "",
+    _gotcha: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -128,6 +129,7 @@ function Contact() {
     setIsSubmitting(true);
 
     try {
+      // 1. Save visitor message directly to Firebase Realtime Database
       const messageRef = ref(database, "messages");
       await push(messageRef, {
         name: formData.name.trim(),
@@ -138,11 +140,31 @@ function Contact() {
         read: false,
       });
 
+      // 2. Dispatch email notification via serverless endpoint (non-blocking)
+      try {
+        await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            subject: formData.subject.trim(),
+            message: formData.message.trim(),
+            _gotcha: formData._gotcha || "",
+          }),
+        });
+      } catch (emailErr) {
+        console.warn("Contact email dispatch notice:", emailErr);
+      }
+
       setFormData({
         name: "",
         email: "",
         subject: "",
         message: "",
+        _gotcha: "",
       });
       setErrors({});
 
@@ -271,6 +293,18 @@ function Contact() {
                 </div>
               </div>
             )}
+
+            {/* Anti-spam honeypot (hidden from human visitors) */}
+            <input
+              type="text"
+              name="_gotcha"
+              value={formData._gotcha || ""}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
+              style={{ display: "none" }}
+              aria-hidden="true"
+            />
 
             {/* Name Input */}
             <div className="form-group">
