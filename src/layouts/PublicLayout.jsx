@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import TweenlyHeroBackground from "../components/ui/TweenlyHeroBackground";
+import CustomCursor from "../components/ui/CustomCursor";
 
 /**
  * PublicLayout
  * Shared root layout component for all public portfolio routes.
  * Hosts a single, persistent, global Tweenly animated background instance
- * that covers the entire document and viewport behind all portfolio sections.
+ * and a smooth custom animated cursor across the portfolio.
  */
 export default function PublicLayout() {
   return (
@@ -29,6 +30,9 @@ export default function PublicLayout() {
         interactive={true}
         className="portfolio-global-bg"
       />
+
+      {/* Global custom animated cursor */}
+      <CustomCursor />
 
       <div className="portfolio-content-layer">
         <Outlet />

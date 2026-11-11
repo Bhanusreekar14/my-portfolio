@@ -26,6 +26,100 @@ body {
 }
 
 /* ========================================================
+   ANIMATED CUSTOM CURSOR
+======================================================== */
+
+body.has-custom-cursor,
+body.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.custom-cursor-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999999;
+  overflow: hidden;
+  transition: opacity 0.25s ease;
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #ed432f;
+  pointer-events: none;
+  z-index: 999999;
+  will-change: transform;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              opacity 0.2s ease;
+}
+
+.custom-cursor-dot.cursor-hover {
+  width: 5px;
+  height: 5px;
+  background-color: #ed432f;
+}
+
+.custom-cursor-dot.cursor-clicked {
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid #ed432f;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 999998;
+  will-change: transform;
+  transition: width 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.24s ease,
+              border-color 0.24s ease;
+}
+
+.custom-cursor-ring.cursor-hover {
+  width: 52px;
+  height: 52px;
+  border-width: 1.5px;
+  border-color: #ed432f;
+  background-color: rgba(237, 67, 47, 0.12);
+}
+
+.custom-cursor-ring.cursor-clicked {
+  width: 26px;
+  height: 26px;
+  background-color: rgba(237, 67, 47, 0.22);
+}
+
+/* Dark Mode Cursor Overrides */
+.portfolio-dark .custom-cursor-dot {
+  background-color: #ed432f;
+}
+
+.portfolio-dark .custom-cursor-ring {
+  border-color: #ed432f;
+}
+
+.portfolio-dark .custom-cursor-ring.cursor-hover {
+  border-color: #ed432f;
+  background-color: rgba(237, 67, 47, 0.22);
+}
+
+/* ========================================================
    GLOBAL APPLICATION SHELL & BACKGROUND STACKING CONTEXT
 ======================================================== */
 
@@ -614,6 +708,96 @@ body {
   color: #ffffff;
   transform: translateY(-2px);
   box-shadow: 4px 6px 0 #ed432f;
+}
+
+/* ========================================================
+   ANIMATED BORDER BUTTON (OFFSET-PATH / OFFSET-DISTANCE)
+======================================================== */
+
+.animated-border-btn-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #171512;
+  box-shadow: 3px 4px 0 #171512;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+.animated-border-btn-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 6px 0 #ed432f;
+}
+
+.portfolio-dark .animated-border-btn-container {
+  background: rgba(243, 238, 223, 0.4);
+  box-shadow: 3px 4px 0 rgba(243, 238, 223, 0.6);
+}
+
+.portfolio-dark .animated-border-btn-container:hover {
+  box-shadow: 4px 6px 0 #ed432f;
+}
+
+.animated-border-beam-track {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.animated-border-beam-mover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: offset-distance;
+}
+
+.animated-border-beam-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(1.5px);
+}
+
+.animated-border-btn-inner {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 13px 26px;
+  background: #ed432f;
+  color: #ffffff;
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  outline: none;
+}
+
+.animated-border-btn-inner:focus-visible {
+  outline: 2px solid #ed432f;
+  outline-offset: 3px;
+}
+
+.animated-border-btn-container:hover .animated-border-btn-inner {
+  background: #171512;
+  color: #ffffff;
 }
 
 .hero-cta-secondary {
@@ -1737,201 +1921,77 @@ body {
   line-height: 1.6;
 }
 
-/* INTERACTIVE TECH ORB */
+/* SINGLE RECTANGULAR BOX CONTAINING ALL GRAVITYTAGS */
 
-.skills-orb-card {
+.gravity-tags-box {
   position: relative;
   width: 100%;
-  margin-bottom: 60px;
+  margin: 15px 0 0 0;
+  background-color: #faf6eb;
   border: 1.5px solid #171512;
-  background: #faf6eb;
-  border-radius: 4px;
-  overflow: hidden;
+  border-radius: 8px;
   box-shadow: 3px 4px 0 #171512;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.skills-orb-header {
-  height: 42px;
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1.5px solid #171512;
-  background: rgba(23, 21, 18, 0.035);
+.portfolio-dark .gravity-tags-box {
+  background-color: #141311;
+  border-color: rgba(243, 238, 223, 0.4);
+  box-shadow: 3px 4px 0 rgba(243, 238, 223, 0.4);
+}
+
+.gravity-tags-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: transparent;
+  cursor: grab;
+  touch-action: pan-y;
   user-select: none;
 }
 
-.skills-orb-indicator {
+.gravity-tags-viewport:active {
+  cursor: grabbing;
+}
+
+.gravity-tag-pill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-}
-
-.orb-indicator-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #ed432f;
-  box-shadow: 0 0 10px rgba(237, 67, 47, 0.8);
-  animation: orbDotPulse 2.4s ease-in-out infinite;
-}
-
-@keyframes orbDotPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 1;
-    box-shadow: 0 0 14px rgba(237, 67, 47, 1);
-  }
-}
-
-.orb-header-title {
-  font-family: "DM Sans", sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.8px;
-  color: #171512;
-  text-transform: uppercase;
-}
-
-.skills-orb-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "DM Sans", sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.4px;
-  color: rgba(23, 21, 18, 0.5);
-  text-transform: uppercase;
-}
-
-.skills-orb-hint .hint-sep {
-  color: #ed432f;
-}
-
-.skills-orb-viewport {
-  position: relative;
-  width: 100%;
-  height: 390px;
-  background: #faf6eb;
-}
-
-/* SKILL BOARD */
-
-.simple-skills-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border-top: 2px solid #171512;
-}
-
-.simple-skill-group {
-  padding: 30px;
-  border-right: 1px solid #171512;
-  border-bottom: 1px solid #171512;
-}
-
-.simple-skill-group:nth-child(even) {
-  border-right: 0;
-}
-
-.skill-group-heading {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 22px;
-}
-
-.skill-group-heading span {
-  color: #ed432f;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.skill-group-heading h3 {
-  margin: 0;
+  border-radius: 9999px;
+  padding: 8px 18px;
   font-size: 13px;
   font-weight: 800;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1.5px solid #171512;
+  box-shadow: 2px 2px 0 #171512;
+  user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
 }
 
-/* SKILLS */
+.portfolio-dark .gravity-tag-pill {
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
 
-.simple-skill-list {
+.gravity-tag-animated {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.gravity-tags-reduced-fallback {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
+  padding: 24px;
+  align-content: flex-end;
+  height: 100%;
 }
 
-.simple-skill {
-  padding: 8px 13px;
-
-  background: transparent;
-
-  border: 1px solid #171512;
-  border-radius: 100px;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  transition: 0.2s ease;
-}
-
-.simple-skill:hover {
-  background: #ed432f;
-  color: #fff;
-  border-color: #ed432f;
-  transform: translateY(-2px);
-}
-
-/* DARK MODE */
-
-.portfolio-dark .skills-orb-card {
-  border-color: rgba(243, 238, 223, 0.6);
-  background: #141311;
-  box-shadow: 3px 4px 0 rgba(243, 238, 223, 0.6);
-}
-
-.portfolio-dark .skills-orb-header {
-  border-bottom: 1.5px solid rgba(243, 238, 223, 0.6);
-  background: rgba(243, 238, 223, 0.04);
-}
-
-.portfolio-dark .orb-header-title {
-  color: #f3eedf;
-}
-
-.portfolio-dark .skills-orb-hint {
-  color: rgba(243, 238, 223, 0.5);
-}
-
-.portfolio-dark .skills-orb-viewport {
-  background: #141311;
-}
-
-.portfolio-dark .simple-skills-grid,
-.portfolio-dark .simple-skill-group,
-.portfolio-dark .simple-skill {
-  border-color: rgba(243, 238, 223, 0.6);
-}
-
-.portfolio-dark .simple-skill {
-  color: #f3eedf;
-}
-
-.portfolio-dark .simple-skill:hover {
-  background: #ed432f;
-  border-color: #ed432f;
-}
-
-/* MOBILE */
-
-@media (max-width: 750px) {
+@media (max-width: 768px) {
   .skills-heading {
     display: block;
   }
@@ -1940,33 +2000,21 @@ body {
     margin-top: 30px;
   }
 
-  .skills-orb-card {
-    margin-bottom: 40px;
+  .gravity-tags-box {
+    margin: 10px 0 0 0;
+    box-shadow: 2.5px 3px 0 #171512;
   }
 
-  .skills-orb-viewport {
-    height: 330px;
+  .portfolio-dark .gravity-tags-box {
+    box-shadow: 2.5px 3px 0 rgba(243, 238, 223, 0.4);
   }
 
-  .skills-orb-hint {
-    display: none;
-  }
-
-  .simple-skills-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .simple-skill-group {
-    padding: 25px 0;
-    border-right: 0;
-  }
-
-  .simple-skill {
-    padding: 7px 11px;
-    font-size: 10px;
+  .gravity-tag-pill {
+    padding: 6px 13px;
+    font-size: 11px;
+    box-shadow: 1.5px 1.5px 0 #171512;
   }
 }
-
 
 /* =========================
    CERTIFICATIONS

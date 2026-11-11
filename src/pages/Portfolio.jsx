@@ -9,6 +9,7 @@ import ResumeModal from "../components/ResumeModal";
 import { database } from "../firebase/config";
 import NavGradientMenu from "../components/ui/NavGradientMenu";
 import PerspectiveTunnelHero from "../components/ui/PerspectiveTunnelHero";
+import AnimatedBorderButton from "../components/ui/AnimatedBorderButton";
 const profilePhoto = "/images/profile-photo.jpg";
 
 import "../styles/portfolio.css";
@@ -169,9 +170,9 @@ function Portfolio() {
             </div>
 
             <div className="hero-cta-group">
-              <a href="#projects" className="hero-cta-primary">
+              <AnimatedBorderButton href="#projects">
                 VIEW WORK ↓
-              </a>
+              </AnimatedBorderButton>
               <a href="#contact" className="hero-cta-secondary">
                 GET IN TOUCH ✉
               </a>
